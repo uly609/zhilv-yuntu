@@ -35,7 +35,7 @@ public class ExportController {
         byte[] bytes = toMarkdown(itinerary).getBytes(StandardCharsets.UTF_8);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename(tripId + ".md").build().toString())
-                .contentType(MediaType.TEXT_MARKDOWN)
+                .contentType(MediaType.parseMediaType("text/markdown;charset=UTF-8"))
                 .body(bytes);
     }
 
