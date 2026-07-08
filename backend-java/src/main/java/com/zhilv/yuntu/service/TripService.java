@@ -150,12 +150,12 @@ public class TripService {
         }
         ArrayNode days = (ArrayNode) object.get("days");
         if (days.isEmpty()) {
-            days.add(defaultDay(request, 1, request.startDate()));
+            days.add(objectMapper.valueToTree(defaultDay(request, 1, request.startDate())));
         }
         for (int i = 0; i < days.size(); i++) {
             JsonNode dayNode = days.get(i);
             if (!dayNode.isObject()) {
-                days.set(i, defaultDay(request, i + 1, request.startDate().plusDays(i)));
+                days.set(i, objectMapper.valueToTree(defaultDay(request, i + 1, request.startDate().plusDays(i))));
                 continue;
             }
             ObjectNode day = (ObjectNode) dayNode;
@@ -179,7 +179,7 @@ public class TripService {
     private void ensureArray(ObjectNode object, String field, Object defaultValue) {
         if (!object.path(field).isArray()) {
             ArrayNode array = objectMapper.createArrayNode();
-            array.addPOJO(defaultValue);
+            array.add(objectMapper.valueToTree(defaultValue));
             object.set(field, array);
         }
     }
